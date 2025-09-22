@@ -1,0 +1,35 @@
+name: Build & Release Biblioteca
+
+on:
+  push:
+    tags:
+      - 'v*'   # corre cuando se sube un tag como v1.0, v2.0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Compilar ejecutable
+        run: |
+          pyinstaller --onefile --noconsole --name Biblioteca main.py
+
+      - name: Renombrar binario
+        run: |
+          if [ "${]()
